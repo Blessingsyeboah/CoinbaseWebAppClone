@@ -287,6 +287,21 @@ function Navbar({ isDark = false }) {
   const [businessOpen, setBusinessOpen] = useState(false);
   const [individualsOpen, setIndividualsOpen] = useState(false);
   const closeTimerRef = useRef(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpandedItem, setMobileExpandedItem] = useState(null);
+
+  const mobileSubMenus = {
+    Individuals: individualsLinks.flatMap((col) => col.items),
+    Businesses: businessLinks.flatMap((col) => col.items),
+    Institutions: institutionsLinks.flatMap((col) => col.items),
+    Developers: developersLinks.flatMap((col) => col.items),
+    Company: companyLinks.flatMap((col) => col.items),
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileExpandedItem(null);
+  };
 
   const openCompany = () => {
     clearTimeout(closeTimerRef.current);
@@ -358,6 +373,7 @@ function Navbar({ isDark = false }) {
     : "h-10 w-full rounded-full border border-[#1652f0] bg-white px-4 text-[14px] text-[#111827] shadow-[0_4px_14px_rgba(22,82,240,0.25)] outline-none";
 
   return (
+    <>
     <header className={`${headerClass} relative`}>
       <div className="mx-auto flex h-[72px] w-full max-w-[1220px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-9">
@@ -528,16 +544,23 @@ function Navbar({ isDark = false }) {
 
           <button
             type="button"
-            aria-label="Open menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            onClick={() => { setMobileMenuOpen((prev) => !prev); setMobileExpandedItem(null); }}
             className={`grid h-10 w-10 place-items-center rounded-full transition-colors lg:hidden ${
               isDark ? "text-white hover:bg-[#1f2937]" : "text-[#596273] hover:bg-[#f4f7fc]"
             }`}
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M4 7h16" />
-              <path d="M4 12h16" />
-              <path d="M4 17h16" />
-            </svg>
+            {mobileMenuOpen ? (
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M6 6l12 12M6 18L18 6" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M4 7h16" />
+                <path d="M4 12h16" />
+                <path d="M4 17h16" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
@@ -872,6 +895,132 @@ function Navbar({ isDark = false }) {
       </div>
 
     </header>
+
+    {/* ── Mobile Menu Overlay ── */}
+    {mobileMenuOpen && (
+      <div className="fixed inset-0 z-[100] flex flex-col bg-white">
+          {/* Top bar */}
+          <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-[#e9edf3] px-4 sm:px-6">
+            <Link to="/" onClick={closeMobileMenu} aria-label="Coinbase home">
+              <img src={logo} alt="Coinbase" className="h-10 w-auto" />
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Search"
+                className="grid h-10 w-10 place-items-center rounded-full border border-[#e2e8f0] bg-gray-200 text-[#596273] transition-colors hover:bg-gray-300"
+              >
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                aria-label="Language"
+                className="grid h-10 w-10 place-items-center rounded-full border border-[#e2e8f0] bg-gray-200 text-[#596273] transition-colors hover:bg-gray-300"
+              >
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" fill="white" stroke="#111111" strokeWidth="1.5" />
+                  <path d="M7.1 8.3c.8-.8 1.8-.7 2.6-.2.5.3 1 .4 1.4.1.6-.4 1.3-.2 1.6.5.3.6 0 1.2-.4 1.7-.4.5-.4 1.1 0 1.5.4.4.9.7.9 1.4 0 .9-.7 1.5-1.5 1.5-.7 0-1.1.5-1.6.9-.7.6-1.5.9-2.4.5-.8-.3-1.2-1.1-1.1-2 .1-.9-.2-1.6-.8-2.3-.8-.9-.9-2.6.3-3.6Z" fill="#111111" />
+                  <path d="M15.7 8.1c.4-.3.9-.2 1.2.2.4.4.9.5 1.4.6.4.1.7.4.7.8 0 .5-.3.8-.8.9-.4.1-.8.4-1 .8-.2.4-.5.7-.9.6-.4 0-.7-.3-.8-.7-.2-.7-.6-1.3-.5-2 0-.5.3-.9.7-1.2Z" fill="#111111" />
+                </svg>
+              </button>
+
+              <Link
+                to="/signin"
+                onClick={closeMobileMenu}
+                className="rounded-full bg-gray-200 px-4 py-2 text-[14px] font-semibold text-[#101114] transition-colors hover:bg-gray-300"
+              >
+                Sign in
+              </Link>
+
+              <Link
+                to="/signup"
+                onClick={closeMobileMenu}
+                className="rounded-full bg-[#1652f0] px-4 py-2 text-[14px] font-semibold text-white transition-colors hover:bg-[#0c46df]"
+              >
+                Sign up
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={closeMobileMenu}
+                className="grid h-10 w-10 place-items-center rounded-full text-[#596273] transition-colors hover:bg-[#f4f7fc]"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Nav items */}
+          <nav className="flex-1 overflow-y-auto">
+            <ul>
+              {topNavLinks.map((link) => {
+                const hasSub = Boolean(mobileSubMenus[link.label]);
+                const isExpanded = mobileExpandedItem === link.label;
+                return (
+                  <li key={link.label} className="border-b border-[#e9edf3]">
+                    {hasSub ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setMobileExpandedItem(isExpanded ? null : link.label)}
+                          className="flex w-full items-center justify-between px-5 py-5 text-[18px] font-semibold text-[#0a0b0d]"
+                        >
+                          {link.label}
+                          <svg
+                            viewBox="0 0 24 24"
+                            className={`h-5 w-5 text-[#596273] transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`}
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M9 18l6-6-6-6" />
+                          </svg>
+                        </button>
+
+                        {isExpanded && (
+                          <ul className="bg-[#f7f9fc] pb-3 pt-1">
+                            {mobileSubMenus[link.label].map((item) => (
+                              <li key={item.label}>
+                                <Link
+                                  to={item.to}
+                                  onClick={closeMobileMenu}
+                                  className="flex flex-col px-6 py-3 transition-colors hover:bg-[#eff2f8]"
+                                >
+                                  <span className="text-[15px] font-semibold text-[#0a0b0d]">{item.label}</span>
+                                  <span className="mt-0.5 text-[13px] text-[#5b616e]">{item.desc}</span>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        to={link.to}
+                        onClick={closeMobileMenu}
+                        className="flex items-center px-5 py-5 text-[18px] font-semibold text-[#0a0b0d] transition-colors hover:bg-[#f7f9fc]"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+      )}
+    </>
   );
 }
 
