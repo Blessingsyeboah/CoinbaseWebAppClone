@@ -15,11 +15,12 @@ import tiktokIcon from "../assets/tiktok-light.svg";
 function Sparkline({ trend = "up", width = 80, height = 32 }) {
   const w = width;
   const h = height;
-  const upPath    = `M0,${h} L${w*0.14},${h*0.72} L${w*0.28},${h*0.78} L${w*0.43},${h*0.52} L${w*0.57},${h*0.36} L${w*0.71},${h*0.2}  L${w*0.85},${h*0.12} L${w},${h*0.04}`;
-  const downPath  = `M0,${h*0.04} L${w*0.14},${h*0.1}  L${w*0.28},${h*0.08} L${w*0.43},${h*0.32} L${w*0.57},${h*0.52} L${w*0.71},${h*0.66} L${w*0.85},${h*0.78} L${w},${h}`;
-  const flatPath  = `M0,${h*0.5}  L${w*0.14},${h*0.42} L${w*0.28},${h*0.54} L${w*0.43},${h*0.46} L${w*0.57},${h*0.5}  L${w*0.71},${h*0.44} L${w*0.85},${h*0.52} L${w},${h*0.48}`;
-  const paths  = { up: upPath, down: downPath, flat: flatPath };
-  const colors = { up: "#098551", down: "#d93025", flat: "#9fadc0" };
+  const upPath      = `M0,${h} L${w*0.14},${h*0.72} L${w*0.28},${h*0.78} L${w*0.43},${h*0.52} L${w*0.57},${h*0.36} L${w*0.71},${h*0.2}  L${w*0.85},${h*0.12} L${w},${h*0.04}`;
+  const downPath    = `M0,${h*0.04} L${w*0.14},${h*0.1}  L${w*0.28},${h*0.08} L${w*0.43},${h*0.32} L${w*0.57},${h*0.52} L${w*0.71},${h*0.66} L${w*0.85},${h*0.78} L${w},${h}`;
+  const flatPath    = `M0,${h*0.5}  L${w*0.14},${h*0.42} L${w*0.28},${h*0.54} L${w*0.43},${h*0.46} L${w*0.57},${h*0.5}  L${w*0.71},${h*0.44} L${w*0.85},${h*0.52} L${w},${h*0.48}`;
+  const neutralPath = `M0,${h*0.4}  L${w*0.14},${h*0.55} L${w*0.28},${h*0.7}  L${w*0.43},${h*0.6}  L${w*0.57},${h*0.45} L${w*0.71},${h*0.35} L${w*0.85},${h*0.42} L${w},${h*0.38}`;
+  const paths  = { up: upPath, down: downPath, flat: flatPath, neutral: neutralPath };
+  const colors = { up: "#16a34a", down: "#dc2626", flat: "#eab308", neutral: "#111111" };
   const d     = paths[trend]  ?? upPath;
   const color = colors[trend] ?? "#098551";
   return (
@@ -52,7 +53,7 @@ function SortIcon() {
 const tableAssets = [
   { icon: bitcoinIcon,  name: "Bitcoin",  symbol: "BTC",  price: "GHS 744,143.03", trend: "up",   change: "+2.95%", positive: true  },
   { icon: ethereumIcon, name: "Ethereum", symbol: "ETH",  price: "GHS 21,996.13",  trend: "up",   change: "+3.86%", positive: true  },
-  { icon: tetherIcon,   name: "Tether",   symbol: "USDT", price: "GHS 10.79",      trend: "flat", change: "+0.02%", positive: true  },
+  { icon: tetherIcon,   name: "Tether",   symbol: "USDT", price: "GHS 10.79",      trend: "neutral", change: "+0.02%", positive: true  },
   { icon: null, color: "#F3BA2F", name: "BNB",      symbol: "BNB",  price: "GHS 6,884.00",  trend: "up",   change: "+3.44%", positive: true  },
   { icon: null, color: "#00AAE4", name: "XRP",      symbol: "XRP",  price: "GHS 14.81",     trend: "up",   change: "+1.46%", positive: true  },
   { icon: usdCoinIcon,  name: "USDC",     symbol: "USDC", price: "GHS 10.78",      trend: "flat", change: "0.00%",  positive: null, apy: "Earn 3.35% APY" },
@@ -310,7 +311,7 @@ function Explore() {
                         <td className="px-4 py-3.5 text-right">
                           <Link
                             to={`/assets/${asset.symbol}`}
-                            className="inline-flex h-8 items-center justify-center rounded-full bg-[#f7f9fc] px-4 text-[13px] font-semibold text-[#0a0b0d] transition-colors hover:bg-[#e8edf4]"
+                            className="inline-flex h-8 items-center justify-center rounded-full bg-blue-600 px-4 text-[13px] font-semibold text-white transition-colors hover:bg-blue-700"
                           >
                             Trade
                           </Link>
