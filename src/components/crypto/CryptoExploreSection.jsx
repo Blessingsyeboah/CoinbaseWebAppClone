@@ -1,4 +1,4 @@
-import Button from "../common/Button";
+import { Link } from "react-router-dom";
 import CryptoRow from "./CryptoRow";
 
 function CryptoExploreSection({ marketRows }) {
@@ -12,11 +12,12 @@ function CryptoExploreSection({ marketRows }) {
           <p className="mt-5 max-w-[680px] text-[17px] leading-[1.5] text-gray-600">
             Simply and securely buy, sell, and manage hundreds of cryptocurrencies.
           </p>
-          <Button
+          <Link
+            to="/explore"
             className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-black px-12 py-7 text-[18px] font-semibold text-white transition-colors hover:bg-gray-900"
           >
             See more assets
-          </Button>
+          </Link>
         </div>
 
         <div className="w-full max-w-[800px] rounded-[40px] bg-black p-7 sm:p-8 lg:ml-auto lg:mr-0 lg:min-h-[620px] lg:p-10">
