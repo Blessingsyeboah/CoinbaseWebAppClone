@@ -15,11 +15,11 @@ function SeventhPageSection() {
       <div className="mx-auto w-full max-w-[1220px]">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] md:gap-8">
           <div>
-            <img src={coinbaseLogo} alt="Coinbase" className="h-8 w-auto" />
+              <img src={coinbaseLogo} alt="Crypto App" className="h-8 w-auto" />
             <p className="mt-5 max-w-[360px] text-[15px] leading-[1.65] text-[#c5cfdd]">
-              Join millions of people using Coinbase to discover, buy, and manage crypto with confidence.
+              Join millions of people using Crypto App to discover, buy, and manage crypto with confidence.
             </p>
-            <img src={poweredByLogo} alt="Powered by Coinbase" className="mt-6 h-6 w-auto" />
+            <img src={poweredByLogo} alt="Powered by Crypto App" className="mt-6 h-6 w-auto" />
 
             <div className="mt-7 flex items-center gap-3">
               {[instagramIcon, xIcon, linkedinIcon, tiktokIcon].map((icon, index) => (
@@ -76,7 +76,7 @@ function SeventhPageSection() {
         </div>
 
         <div className="mt-10 border-t border-[#273140] pt-6 text-[13px] text-[#9fadc0]">
-          <p>© 2026 Coinbase clone. All rights reserved.</p>
+          <p>© 2026 Crypto App clone. All rights reserved.</p>
         </div>
       </div>
     </footer>

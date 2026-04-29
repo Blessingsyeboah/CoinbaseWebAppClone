@@ -90,7 +90,7 @@ const footerColumns = [
   },
   {
     heading: "Learn",
-    links: ["Explore", "Market statistics", "Coinbase Bytes newsletter", "Crypto basics", "Tips & tutorials", "Crypto glossary", "Market updates", "What is Bitcoin?", "What is crypto?", "What is a blockchain?", "How to set up a crypto wallet?", "How to send crypto?", "Taxes"],
+    links: ["Explore", "Market statistics", "Crypto App Bytes newsletter", "Crypto basics", "Tips & tutorials", "Crypto glossary", "Market updates", "What is Bitcoin?", "What is crypto?", "What is a blockchain?", "How to set up a crypto wallet?", "How to send crypto?", "Taxes"],
   },
   {
     heading: "Support",
@@ -98,11 +98,11 @@ const footerColumns = [
   },
   {
     heading: "Individuals",
-    links: ["Buy & sell", "Earn free crypto", "Base App", "Coinbase One", "Debit Card"],
+    links: ["Buy & sell", "Earn free crypto", "Base App", "Crypto App One", "Debit Card"],
   },
   {
     heading: "Businesses",
-    links: ["Asset Listings", "Coinbase Business", "Payments", "Commerce", "Token Manager"],
+    links: ["Asset Listings", "Crypto App Business", "Payments", "Commerce", "Token Manager"],
   },
   {
     heading: "Institutions",
@@ -147,7 +147,7 @@ function Explore() {
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#e8f0fe] px-3 py-1">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#1652f0]" />
                 <span className="text-[13px] font-semibold text-[#1652f0]">
-                  Coinbase 50 Index is up +3.01% (24hrs)
+                  Crypto App 50 Index is up +3.01% (24hrs)
                 </span>
               </div>
             </div>
@@ -363,7 +363,7 @@ function Explore() {
               {/* Big blue sign-up card */}
               <div className="relative overflow-hidden rounded-2xl bg-[#0052ff] p-6">
                 <p className="text-[17px] font-semibold leading-snug text-white">
-                  Create a Coinbase account to trade crypto.
+                  Create a Crypto App account to trade crypto.
                 </p>
                 <p className="mt-2 text-[13px] text-white/80">
                   It&apos;s quick, easy, and secure.
@@ -441,10 +441,10 @@ function Explore() {
         </div>
       </section>
 
-      {/* ── New on Coinbase ── */}
+      {/* ── New on Crypto App ── */}
       <section className="border-t border-[#eef1f6] px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-[1220px]">
-          <h2 className="mb-5 text-[20px] font-semibold text-[#0a0b0d]">New on Coinbase</h2>
+          <h2 className="mb-5 text-[20px] font-semibold text-[#0a0b0d]">New on Crypto App</h2>
           <div className="flex flex-wrap gap-4">
             {newAssets.map((asset) => (
               <div
@@ -466,9 +466,9 @@ function Explore() {
       <footer className="border-t border-[#e8edf4] bg-white px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-[1220px]">
 
-          {/* Coinbase logo at top of footer */}
+          {/* Crypto App logo at top of footer */}
           <div className="mb-10">
-            <img src={coinbaseNavLogo} alt="Coinbase" className="h-8 w-auto" />
+            <img src={coinbaseNavLogo} alt="Crypto App" className="h-8 w-auto" />
           </div>
 
           <div className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-9">
@@ -505,7 +505,7 @@ function Explore() {
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <p className="text-[12px] text-[#9fadc0]">
-                © 2026 Coinbase&nbsp;•&nbsp;
+                © 2026 Crypto App&nbsp;•&nbsp;
                 <a href="#" className="hover:text-[#0a0b0d]">Privacy</a>
                 &nbsp;•&nbsp;
                 <a href="#" className="hover:text-[#0a0b0d]">Terms &amp; Conditions</a>

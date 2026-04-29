@@ -33,13 +33,13 @@ function AdvancedTraderSection() {
           </h2>
 
           <p className="mt-4 text-[16px] leading-[1.6] text-[#4b5565] sm:mt-5 sm:text-[17px] lg:mt-6 lg:text-[21px] lg:leading-[1.65]">
-            Powerful analytical tools with the safety and security of Coinbase deliver the ultimate trading
+            Powerful analytical tools with the safety and security of Crypto App deliver the ultimate trading
             experience. Tap into sophisticated charting capabilities, real-time order books, and deep liquidity
             across hundreds of markets.
           </p>
 
           <Button
-            onClick={() => navigate("/advanced")}
+            onClick={() => navigate("/start-trading")}
             className="mt-6 inline-flex h-[52px] items-center justify-center rounded-full bg-black px-9 text-[16px] font-semibold text-white transition-colors hover:bg-[#1f1f1f] sm:mt-7 sm:h-[54px] sm:px-10 sm:text-[17px] lg:mt-9 lg:h-[58px] lg:px-12 lg:text-[19px]"
           >
             Start trading

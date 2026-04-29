@@ -36,7 +36,7 @@ const companyLinks = [
     items: [
       { label: "About", desc: "Powering the crypto economy", to: "/learn" },
       { label: "Affiliates", desc: "Help introduce the world to crypto", to: "/" },
-      { label: "Blog", desc: "Read the latest from Coinbase", to: "/" },
+      { label: "Blog", desc: "Read the latest from Crypto App", to: "/" },
     ],
   },
   {
@@ -135,7 +135,7 @@ const businessLinks = [
     col: 1,
     items: [
       { label: "Business", desc: "Crypto trading and payments for startups and SMBs", to: "/" },
-      { label: "Asset Listings", desc: "List your asset on Coinbase", to: "/" },
+      { label: "Asset Listings", desc: "List your asset on Crypto App", to: "/" },
     ],
   },
   {
@@ -183,7 +183,7 @@ const individualsLinks = [
     items: [
       { label: "Buy and sell", desc: "Buy, sell, and use crypto", to: "/" },
       { label: "Base App", desc: "Post, earn, trade, and chat, all in one place", to: "/" },
-      { label: "Coinbase One", desc: "Get zero trading fees and more", to: "/" },
+      { label: "Crypto App One", desc: "Get zero trading fees and more", to: "/" },
       { label: "Private Client", desc: "For trusts, family offices, UHNWIs", to: "/" },
       { label: "Onchain", desc: "Dive into the world of onchain apps", to: "/" },
     ],
@@ -193,7 +193,7 @@ const individualsLinks = [
     items: [
       { label: "Advanced", desc: "Professional-grade trading tools", to: "/advanced" },
       { label: "Earn", desc: "Stake your crypto and earn rewards", to: "/" },
-      { label: "Coinbase Wealth", desc: "Institutional-grade services for UHNW", to: "/" },
+      { label: "Crypto App Wealth", desc: "Institutional-grade services for UHNW", to: "/" },
       { label: "Credit Card", desc: "Earn up to 4% bitcoin back", to: "/" },
       { label: "Debit Card", desc: "Spend crypto, get crypto back", to: "/" },
     ],
@@ -212,7 +212,7 @@ const individualsIcons = {
       <rect x="3" y="3" width="18" height="18" rx="3" />
     </svg>
   ),
-  "Coinbase One": (
+  "Crypto App One": (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="3" />
       <circle cx="12" cy="12" r="7" />
@@ -242,7 +242,7 @@ const individualsIcons = {
       <path d="M7 17L17 7" />
     </svg>
   ),
-  "Coinbase Wealth": (
+  "Crypto App Wealth": (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 3l6 4 6-4" />
       <path d="M6 3v10l6 8 6-8V3" />
@@ -377,8 +377,8 @@ function Navbar({ isDark = false }) {
     <header className={`${headerClass} relative`}>
       <div className="mx-auto flex h-[72px] w-full max-w-[1220px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-9">
-          <Link to="/" aria-label="Coinbase home" className="shrink-0">
-            <img src={logo} alt="Coinbase" className="h-10 w-auto" />
+          <Link to="/" aria-label="Crypto App home" className="shrink-0">
+            <img src={logo} alt="Crypto App" className="h-10 w-auto" />
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -638,7 +638,7 @@ function Navbar({ isDark = false }) {
                 System Update 2025
               </p>
               <p className="mt-1 text-[16px] leading-snug text-[#5B616E]">
-                The next chapter of Coinbase. Live on X 12/17.
+                The next chapter of Crypto App. Live on X 12/17.
               </p>
               <Link
                 to="/"
@@ -833,7 +833,7 @@ function Navbar({ isDark = false }) {
           <div className="w-[280px] shrink-0 overflow-hidden rounded-2xl border border-[#e9edf3] shadow-sm">
             <img
               src={developersUpsell}
-              alt="Coinbase Developer Platform"
+              alt="Crypto App Developer Platform"
               className="h-auto w-full object-cover"
             />
             <div className="bg-[#F8FAFC] px-4 py-3">
@@ -841,7 +841,7 @@ function Navbar({ isDark = false }) {
                 World class crypto infrastructure
               </p>
               <p className="mt-0.5 text-[12px] text-[#5B616E]">
-                Discover Coinbase&apos;s developer platform.
+                Discover Crypto App&apos;s developer platform.
               </p>
             </div>
           </div>
@@ -901,8 +901,8 @@ function Navbar({ isDark = false }) {
       <div className="fixed inset-0 z-[100] flex flex-col bg-white">
           {/* Top bar */}
           <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-[#e9edf3] px-4 sm:px-6">
-            <Link to="/" onClick={closeMobileMenu} aria-label="Coinbase home">
-              <img src={logo} alt="Coinbase" className="h-10 w-auto" />
+            <Link to="/" onClick={closeMobileMenu} aria-label="Crypto App home">
+              <img src={logo} alt="Crypto App" className="h-10 w-auto" />
             </Link>
 
             <div className="flex items-center gap-2">

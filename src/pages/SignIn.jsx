@@ -3,14 +3,18 @@ import { Link } from "react-router-dom";
 function SignIn() {
   return (
     <section className="relative flex min-h-screen items-center justify-center bg-[#141414] px-4 py-10 text-white">
-      <Link to="/" aria-label="Coinbase home" className="absolute left-6 top-6 text-white sm:left-8 sm:top-8">
+      <Link to="/" aria-label="Crypto App home" className="absolute left-6 top-6 text-white sm:left-8 sm:top-8">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" className="h-10 w-10" fill="currentColor">
           <path d="M20.032 28.5c-4.705 0-8.516-3.804-8.516-8.5s3.81-8.5 8.516-8.5a8.51 8.51 0 0 1 8.388 7.083H37C36.276 9.857 28.96 3 20.032 3 10.629 3 3 10.615 3 20s7.629 17 17.032 17C28.959 37 36.276 30.143 37 21.417h-8.58a8.51 8.51 0 0 1-8.388 7.083" />
         </svg>
       </Link>
 
       <div className="w-full max-w-[500px]">
-        <h1 className="mx-auto w-[82%] text-center text-3xl font-medium tracking-tight sm:text-4xl">Sign in to Coinbase</h1>
+        <h1 className="mx-auto w-[82%] text-center text-3xl font-medium tracking-tight sm:text-4xl">Sign in to Crypto App</h1>
+
+        <div className="mx-auto mt-4 w-[82%] rounded-lg border border-yellow-600/50 bg-yellow-600/10 px-4 py-3 text-center text-sm text-yellow-500">
+          Demo app – do not use your real password
+        </div>
 
         <form className="mt-6 space-y-4" onSubmit={(event) => event.preventDefault()}>
           <label htmlFor="email" className="block w-[82%] mx-auto text-sm font-medium text-gray-300">

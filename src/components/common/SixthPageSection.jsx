@@ -71,7 +71,7 @@ function SixthPageSection() {
                     crypto economy
                   </a>
                   <p className="mt-3 text-[18px] leading-[1.72] tracking-[0.005em] text-[#4b5565] sm:text-[19px]">
-                    Coinbase believes crypto will be part of the solution for creating an open financial system
+                    Crypto App believes crypto will be part of the solution for creating an open financial system
                     that is both more efficient and more...
                   </p>
                 </div>

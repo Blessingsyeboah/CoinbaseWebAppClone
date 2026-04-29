@@ -1,7 +1,7 @@
 import heroImage from "../assets/Hero__4_.png";
 import AdvancedTraderSection from "../components/common/AdvancedTraderSection";
 import BaseAppSection from "../components/common/BaseAppSection";
-import CoinbaseOneSection from "../components/common/CoinbaseOneSection";
+import CryptoAppOneSection from "../components/common/CoinbaseOneSection";
 import HeroSection from "../components/common/HeroSection";
 import SeventhPageSection from "../components/common/SeventhPageSection";
 import SixthPageSection from "../components/common/SixthPageSection";
@@ -15,7 +15,7 @@ function Home() {
       <HeroSection heroImage={heroImage} />
       <CryptoExploreSection marketRows={marketRows} />
       <AdvancedTraderSection />
-      <CoinbaseOneSection />
+      <CryptoAppOneSection />
       <BaseAppSection />
       <SixthPageSection />
       <TakeControlSection />

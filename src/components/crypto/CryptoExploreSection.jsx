@@ -24,7 +24,7 @@ function CryptoExploreSection({ marketRows }) {
           <div className="hidden grid-cols-[2fr_1fr_1fr_auto] px-4 py-4 text-lg font-semibold tracking-[0.08em] text-white sm:grid">
             <span>Tradable</span>
             <span>Top gainers</span>
-            <span>New on Coinbase</span>
+            <span>New on Crypto App</span>
           </div>
 
           {marketRows.map((asset) => (

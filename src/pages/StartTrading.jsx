@@ -1,6 +1,6 @@
 import advancedHero from "../assets/advanced_hero.webp";
 
-function Advanced() {
+function StartTrading() {
   return (
     <section className="min-h-screen bg-[#0A0A0A] text-white">
       <div className="border-b border-[#1f2937] bg-[#0A0A0A]">
@@ -61,4 +61,4 @@ function Advanced() {
   );
 }
 
-export default Advanced;
+export default StartTrading;
