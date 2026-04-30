@@ -1,6 +1,29 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authLogin } from "../api/api";
 
 function SignIn() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setMessage("");
+    setLoading(true);
+
+    try {
+      await authLogin({ email, password });
+      navigate("/");
+    } catch (error) {
+      setMessage(error.message || "Unable to sign in.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="relative flex min-h-screen items-center justify-center bg-[#141414] px-4 py-10 text-white">
       <Link to="/" aria-label="Crypto App home" className="absolute left-6 top-6 text-white sm:left-8 sm:top-8">
@@ -16,7 +39,7 @@ function SignIn() {
           Demo app – do not use your real password
         </div>
 
-        <form className="mt-6 space-y-4" onSubmit={(event) => event.preventDefault()}>
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           <label htmlFor="email" className="block w-[82%] mx-auto text-sm font-medium text-gray-300">
             Email
           </label>
@@ -24,15 +47,33 @@ function SignIn() {
           <input
             id="email"
             type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             placeholder="Your email address"
             className="block w-[82%] rounded-xl border border-white/15 bg-[#181818] px-6 py-4 text-base text-gray-100 placeholder:text-gray-500 outline-none transition-colors focus:border-[#2f61e8] mx-auto"
           />
 
+          <label htmlFor="password" className="block w-[82%] mx-auto text-sm font-medium text-gray-300">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Your password"
+            className="block w-[82%] rounded-xl border border-white/15 bg-[#181818] px-6 py-4 text-base text-gray-100 placeholder:text-gray-500 outline-none transition-colors focus:border-[#2f61e8] mx-auto"
+          />
+
+          {message && <p className="mx-auto w-[82%] text-center text-sm text-red-400">{message}</p>}
+
           <button
             type="submit"
-            className="block w-[82%] rounded-full bg-[#273c75] px-6 py-4 text-base font-semibold text-black transition-colors hover:bg-[#22356a] mx-auto"
+            disabled={loading}
+            className="block w-[82%] rounded-full bg-[#273c75] px-6 py-4 text-base font-semibold text-black transition-colors hover:bg-[#22356a] disabled:cursor-not-allowed disabled:opacity-60 mx-auto"
           >
-            Continue
+            {loading ? "Signing in…" : "Continue"}
           </button>
         </form>
 

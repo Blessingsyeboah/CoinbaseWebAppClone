@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { createCrypto, fetchCryptos, fetchTopGainers, fetchNewCryptos } from "../api/api";
 import bitcoinIcon from "../assets/b57ac673f06a4b0338a596817eb0a50ce16e2059f327dc117744449a47915cb2.png";
 import ethereumIcon from "../assets/3af4b33bde3012fd29dd1366b0ad737660f24acc91750ee30a034a0679256d0b.png";
 import tetherIcon from "../assets/1f8489bb280fb0a0fd643c1161312ba49655040e9aaaced5f9ad3eeaf868eadc.png";
@@ -124,13 +125,123 @@ const footerColumns = [
 
 function Explore() {
   const [search, setSearch] = useState("");
+  const [assets, setAssets] = useState(tableAssets);
+  const [topGainers, setTopGainers] = useState(topMovers);
+  const [newCryptos, setNewCryptos] = useState(newAssets);
+  const [newCryptoPayload, setNewCryptoPayload] = useState({
+    name: "",
+    symbol: "",
+    price: "",
+    image: "",
+    change24h: "",
+  });
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const filtered = tableAssets.filter(
+  useEffect(() => {
+    let active = true;
+
+    Promise.all([fetchCryptos(), fetchTopGainers(), fetchNewCryptos()])
+      .then(([allResponse, gainersResponse, newResponse]) => {
+        if (!active) return;
+        if (allResponse?.data) {
+          setAssets(
+            allResponse.data.map((asset) => ({
+              ...asset,
+              price:
+                typeof asset.price === "number"
+                  ? `GHS ${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                  : asset.price,
+              change:
+                asset.change24h !== undefined
+                  ? `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toFixed(2)}%`
+                  : asset.change || "",
+              positive: asset.change24h >= 0,
+              trend: asset.change24h > 0 ? "up" : asset.change24h < 0 ? "down" : "neutral",
+            })),
+          );
+        }
+
+        if (gainersResponse?.data) {
+          setTopGainers(
+            gainersResponse.data.map((asset) => ({
+              symbol: asset.symbol,
+              name: asset.name,
+              change: `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toFixed(2)}%`,
+              trend: asset.change24h > 0 ? "up" : asset.change24h < 0 ? "down" : "neutral",
+              color: "#00C781",
+              price:
+                typeof asset.price === "number"
+                  ? `GHS ${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                  : asset.price,
+            })),
+          );
+        }
+
+        if (newResponse?.data) {
+          setNewCryptos(
+            newResponse.data.map((asset) => ({
+              symbol: asset.symbol,
+              name: asset.name,
+              addedDate: asset.createdAt ? `Added ${new Date(asset.createdAt).toLocaleDateString()}` : "Added recently",
+              color: "#1B1B1B",
+            })),
+          );
+        }
+      })
+      .catch(() => {
+        // Retain fallback data if API is unavailable.
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const filtered = assets.filter(
     (a) =>
       search === "" ||
       a.name.toLowerCase().includes(search.toLowerCase()) ||
       a.symbol.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const handleAddCrypto = async (event) => {
+    event.preventDefault();
+    setSubmitError("");
+    setSubmitMessage("");
+    setSubmitLoading(true);
+
+    try {
+      const result = await createCrypto(newCryptoPayload);
+      if (result?.success) {
+        setSubmitMessage(result.message || "Cryptocurrency added successfully.");
+        setNewCryptoPayload({ name: "", symbol: "", price: "", image: "", change24h: "" });
+        const allResponse = await fetchCryptos();
+        if (allResponse?.data) {
+          setAssets(
+            allResponse.data.map((asset) => ({
+              ...asset,
+              price:
+                typeof asset.price === "number"
+                  ? `GHS ${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                  : asset.price,
+              change:
+                asset.change24h !== undefined
+                  ? `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toFixed(2)}%`
+                  : asset.change || "",
+              positive: asset.change24h >= 0,
+              trend: asset.change24h > 0 ? "up" : asset.change24h < 0 ? "down" : "neutral",
+            })),
+          );
+        }
+      }
+    } catch (error) {
+      setSubmitError(error.message || "Unable to add cryptocurrency.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -166,6 +277,72 @@ function Explore() {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Add new crypto ── */}
+      <section className="border-b border-[#eef1f6] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1220px]">
+          <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-[#e8edf4] bg-[#f7f9fc] p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-[18px] font-semibold text-[#0a0b0d]">Add a new cryptocurrency</h2>
+              <p className="mt-2 text-sm text-[#475569]">Send new coin data to the backend and store it in MongoDB.</p>
+            </div>
+            <span className="rounded-full border border-[#d1d9e0] bg-white px-4 py-2 text-sm text-[#334155]">Success and error responses shown below</span>
+          </div>
+
+          <form onSubmit={handleAddCrypto} className="grid gap-4 md:grid-cols-5">
+            <input
+              value={newCryptoPayload.name}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, name: event.target.value }))}
+              placeholder="Name"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+            <input
+              value={newCryptoPayload.symbol}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, symbol: event.target.value }))}
+              placeholder="Symbol"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+            <input
+              value={newCryptoPayload.price}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, price: event.target.value }))}
+              placeholder="Price"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+              type="number"
+              step="0.01"
+            />
+            <input
+              value={newCryptoPayload.change24h}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, change24h: event.target.value }))}
+              placeholder="24h change"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+              type="number"
+              step="0.01"
+            />
+            <input
+              value={newCryptoPayload.image}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, image: event.target.value }))}
+              placeholder="Image URL"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+
+            <button
+              type="submit"
+              disabled={submitLoading}
+              className="md:col-span-5 rounded-full bg-[#273c75] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#1f2f5a] disabled:opacity-60"
+            >
+              {submitLoading ? "Saving crypto…" : "Add cryptocurrency"}
+            </button>
+          </form>
+
+          {(submitMessage || submitError) && (
+            <div className="mt-4 rounded-2xl border px-4 py-3 text-sm">
+              <p className={submitMessage ? "text-green-700" : "text-red-700"}>
+                {submitMessage || submitError}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -265,10 +442,10 @@ function Explore() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(search ? filtered : tableAssets).map((asset, i) => (
+                    {filtered.map((asset, i) => (
                       <tr
                         key={asset.symbol}
-                        className={`transition-colors hover:bg-[#f7f9fc] ${i < tableAssets.length - 1 ? "border-b border-[#eef1f6]" : ""}`}
+                        className={`transition-colors hover:bg-[#f7f9fc] ${i < filtered.length - 1 ? "border-b border-[#eef1f6]" : ""}`}
                       >
                         <td className="px-3 py-3.5 text-center text-[13px] text-[#9fadc0]">{i + 1}</td>
                         <td className="px-2 py-3.5">
@@ -418,7 +595,7 @@ function Explore() {
                 </div>
                 <div className="overflow-x-auto pb-1">
                   <div className="flex gap-3" style={{ width: "max-content" }}>
-                    {topMovers.map((mover) => (
+                    {topGainers.map((mover) => (
                       <div key={mover.symbol} className="w-[130px] flex-shrink-0 rounded-2xl border border-[#e8edf4] p-3 transition-colors hover:bg-[#f7f9fc]">
                         <CoinAvatar symbol={mover.symbol} color={mover.color} />
                         <p className="mt-2 text-[13px] font-semibold text-[#0a0b0d]">{mover.name}</p>
@@ -446,7 +623,7 @@ function Explore() {
         <div className="mx-auto w-full max-w-[1220px]">
           <h2 className="mb-5 text-[20px] font-semibold text-[#0a0b0d]">New on Crypto App</h2>
           <div className="flex flex-wrap gap-4">
-            {newAssets.map((asset) => (
+            {newCryptos.map((asset) => (
               <div
                 key={asset.symbol}
                 className="flex w-[180px] flex-col items-start gap-2 rounded-2xl border border-[#e8edf4] p-5 transition-colors hover:bg-[#f7f9fc]"

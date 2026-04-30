@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Learn from "./pages/Learn";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Profile from "./pages/Profile";
 
 function App() {
   const { pathname } = useLocation();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/advanced" element={<Advanced />} />
           <Route path="/start-trading" element={<StartTrading />} />
           <Route path="/learn" element={<Learn />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>

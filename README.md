@@ -2,13 +2,13 @@
 
 # Coinbase Clone - React & Tailwind CSS Assignment
 
-## 📋 Overview
+Overview
 
 In this assignment, you will build a full clone of the [Coinbase](https://www.digital exchange.com/) website using **React.js** and **Tailwind CSS**. This project will help you practice component-based architecture, client-side routing, responsive design, and modern CSS utilities.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 After accepting this assignment, follow these steps:
 
@@ -47,7 +47,7 @@ The app will be available at `http://localhost:5173`
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -73,7 +73,7 @@ src/
 
 ---
 
-## 🎨 Design Reference
+## Design Reference
 
 Visit [digital exchange.com](https://www.digital exchange.com/)
 
@@ -85,7 +85,7 @@ Visit [digital exchange.com](https://www.digital exchange.com/)
 
 ---
 
-## 💡 Helpful Resources
+## Helpful Resources
 
 - [React Documentation](https://react.dev/)
 - [React Router Documentation](https://reactrouter.com/)
@@ -96,6 +96,6 @@ Visit [digital exchange.com](https://www.digital exchange.com/)
 
 ---
 
-## 🌐 Deployment on Netlify
+## Deployment on Netlify
 
 You must deploy your completed project on **Netlify**.
