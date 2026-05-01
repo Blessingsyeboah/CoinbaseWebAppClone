@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://interim-assesment-blessingsyeboah.onrender.com/)";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://interim-assesment-blessingsyeboah.onrender.com/api";
 
 async function request(path, options = {}) {
   let response;
