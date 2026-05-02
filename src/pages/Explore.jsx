@@ -146,8 +146,7 @@ function Explore() {
       .then(([allResponse, gainersResponse, newResponse]) => {
         if (!active) return;
         if (allResponse?.data) {
-          setAssets(
-            allResponse.data.map((asset) => ({
+          const apiData = allResponse.data.map((asset) => ({
               ...asset,
               price:
                 typeof asset.price === "number"
@@ -159,9 +158,10 @@ function Explore() {
                   : asset.change || "",
               positive: asset.change24h >= 0,
               trend: asset.change24h > 0 ? "up" : asset.change24h < 0 ? "down" : "neutral",
-            })),
-          );
-        }
+            }));
+            setAssets([...tableAssets, ...apiData]);
+          }
+         
 
         if (gainersResponse?.data) {
           setTopGainers(
@@ -286,9 +286,9 @@ function Explore() {
           <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-[#e8edf4] bg-[#f7f9fc] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-[18px] font-semibold text-[#0a0b0d]">Add a new cryptocurrency</h2>
-              <p className="mt-2 text-sm text-[#475569]">Send new coin data to the backend and store it in MongoDB.</p>
+              <p className="mt-2 text-sm text-[#475569]">Expand your portfolio by integrating the latest digital assets. Select from our list of supported networks to get started.</p>
             </div>
-            <span className="rounded-full border border-[#d1d9e0] bg-white px-4 py-2 text-sm text-[#334155]">Success and error responses shown below</span>
+            <span className="rounded-full border border-[#d1d9e0] bg-white px-4 py-2 text-sm text-[#334155]">See available cryptocurrencies you can trade</span>
           </div>
 
           <form onSubmit={handleAddCrypto} className="grid gap-4 md:grid-cols-5">
