@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import Button from "./Button";
 import Input from "./Input";
 
@@ -32,11 +33,13 @@ function HeroSection({ heroImage }) {
             placeholder="satoshi@nakamoto.com"
             className="h-14 flex-1 rounded-xl border border-[#1652f0] px-4 text-lg text-[#0a0b0d] outline-none transition-shadow placeholder:text-[#8a93a3] focus:border-[#1652f0] focus:ring-2 focus:ring-[#1652f0]/20"
           />
+        <Link to="/signup" className="flex-1 sm:flex-none">
           <Button
             className="h-14 rounded-4xl bg-[#1652f0] px-7 text-lg font-semibold text-white transition-colors hover:bg-[#0c46df]"
           >
             Sign up
           </Button>
+        </Link>
         </div>
       </div>
     </section>

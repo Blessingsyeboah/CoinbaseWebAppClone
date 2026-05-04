@@ -2,7 +2,7 @@ import cryptoCoinsImage from "../../assets/image (1).png";
 
 function TakeControlSection() {
   return (
-    <section className="bg-white px-5 py-16 sm:px-7 lg:px-8 lg:py-20">
+    <section className="relative bg-white px-5 py-16 sm:px-7 lg:px-8 lg:py-20">
       <div className="mx-auto flex w-full max-w-[1220px] flex-col items-center gap-10 md:flex-row md:justify-between">
         <div className="flex max-w-[520px] flex-col">
           <h2 className="text-[42px] font-semibold leading-[1.06] tracking-[-0.02em] text-[#0a0b0d] sm:text-[52px] lg:text-[60px]">
@@ -36,6 +36,19 @@ function TakeControlSection() {
           />
         </div>
       </div>
+
+        <div className="mx-auto mt-12 max-w-[900px] text-center">
+          <p className="text-[12px] leading-[1.5] text-[#707a8a]">
+            DEX trading is offered by Coinbase Bermuda Technologies Ltd.
+            <br /><br />
+            Products and features may not be available in all regions. Information
+          is for informational purposes only, and is not (i) an offer, or
+          solicitation of an offer, to invest in, or to buy or sell, any
+          interests or shares, or to participate in any investment or trading
+          strategy or (ii) intended to provide accounting, legal, or tax advice,
+          or investment recommendations. Trading cryptocurrency comes with risk.
+          </p>
+        </div>
     </section>
   );
 }
