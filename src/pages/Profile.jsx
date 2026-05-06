@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { createCrypto, fetchCryptos, fetchTopGainers, fetchNewCryptos } from "../api/api";
+import { createCrypto, fetchCryptos } from "../api/api";
 
 // Assets imported from Explore
 import bitcoinIcon from "../assets/b57ac673f06a4b0338a596817eb0a50ce16e2059f327dc117744449a47915cb2.png";
@@ -10,10 +10,6 @@ import tetherIcon from "../assets/1f8489bb280fb0a0fd643c1161312ba49655040e9aaace
 import solanaIcon from "../assets/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png";
 import usdCoinIcon from "../assets/c347b6d1a7624e24c4e90089a69dfc8fb75523daf8eeb88007372a0c3a30d428.png";
 import coinbaseNavLogo from "../assets/coinbaseLogoNavigation-4.svg";
-import instagramIcon from "../assets/instagram-light.svg";
-import xIcon from "../assets/x-light.svg";
-import linkedinIcon from "../assets/linkedin-light.svg";
-import tiktokIcon from "../assets/tiktok-light.svg";
 
 // --- Helper Components from Explore ---
 function Sparkline({ trend = "up", width = 80, height = 32 }) {
@@ -51,20 +47,44 @@ const tableAssets = [
   { icon: solanaIcon,   name: "Solana",   symbol: "SOL",  price: "GHS 926.56",     trend: "up",   change: "+4.50%", positive: true  },
 ];
 
-const statCards = [
-  { label: "Total market cap", value: "GHS 24,717", change: "+2.27%", trend: "up" },
-  { label: "Trade volume",     value: "GHS 2,241",  change: "+78.40%", trend: "up" },
-  { label: "Buy-sell ratio",   value: "GHS 0.76",   change: "+0.69%",  trend: "up" },
-];
-
 function Profile() {
   const navigate = useNavigate();
   const { user, loading, checkAuth } = useAuth();
   const [search, setSearch] = useState("");
   const [assets, setAssets] = useState(tableAssets);
+  
+  // Form State
   const [newCryptoPayload, setNewCryptoPayload] = useState({
     name: "", symbol: "", price: "", image: "", change24h: ""
   });
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const formatAssets = (apiData) => {
+    return apiData.map(asset => ({
+      ...asset,
+      price: typeof asset.price === "number" 
+        ? `GHS ${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+        : asset.price,
+      change: asset.change24h !== undefined
+        ? `${asset.change24h >= 0 ? "+" : ""}${asset.change24h.toFixed(2)}%`
+        : asset.change || "",
+      positive: asset.change24h >= 0,
+      trend: asset.change24h > 0 ? "up" : asset.change24h < 0 ? "down" : "neutral"
+    }));
+  };
+
+  const loadCryptos = async () => {
+    try {
+      const response = await fetchCryptos();
+      if (response?.data) {
+        setAssets([...tableAssets, ...formatAssets(response.data)]);
+      }
+    } catch (e) {
+      console.error("Failed to load market data");
+    }
+  };
 
   useEffect(() => {
     const initPage = async () => {
@@ -76,27 +96,32 @@ function Profile() {
           return;
         }
       }
-
-      try {
-        const response = await fetchCryptos();
-        if (response?.data) {
-          const apiData = response.data.map(asset => ({
-            ...asset,
-            price: typeof asset.price === "number" ? `GHS ${asset.price.toLocaleString()}` : asset.price,
-            change: `${asset.change24h >= 0 ? "+" : ""}${asset.change24h?.toFixed(2)}%`,
-            positive: asset.change24h >= 0,
-            trend: asset.change24h > 0 ? "up" : "down"
-          }));
-          setAssets([...tableAssets, ...apiData]);
-        }
-      } catch (e) {
-        console.error("Failed to load market data");
-      }
+      loadCryptos();
     };
     initPage();
   }, [user, navigate, checkAuth]);
 
-  // FIX: Safety check for invalid dates
+  const handleAddCrypto = async (event) => {
+    event.preventDefault();
+    setSubmitError("");
+    setSubmitMessage("");
+    setSubmitLoading(true);
+
+    try {
+      const result = await createCrypto(newCryptoPayload);
+      if (result?.success) {
+        setSubmitMessage(result.message || "Cryptocurrency added successfully.");
+        setNewCryptoPayload({ name: "", symbol: "", price: "", image: "", change24h: "" });
+        // Refresh the list
+        await loadCryptos();
+      }
+    } catch (error) {
+      setSubmitError(error.message || "Unable to add cryptocurrency.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
   const joinDate = user?.createdAt 
     ? new Date(user.createdAt).toLocaleDateString() 
     : "Recently";
@@ -112,7 +137,7 @@ function Profile() {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* ── Hero: Styled like Explore.jsx ── */}
+      {/* ── Hero ── */}
       <section className="border-b border-[#eef1f6] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-[1220px]">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
@@ -127,7 +152,6 @@ function Profile() {
                 </span>
               </div>
             </div>
-            {/* Search Bar - Stylized like Explore */}
             <div className="flex w-full max-w-[360px] items-center gap-2 rounded-full border border-[#d1d9e0] bg-[#f7f9fc] px-4 py-3">
               <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[#9fadc0]" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="7" />
@@ -145,7 +169,73 @@ function Profile() {
         </div>
       </section>
 
-      {/* ── Table Section: Explore layout ── */}
+      {/* ── Add new crypto (Imported Layout) ── */}
+      <section className="border-b border-[#eef1f6] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1220px]">
+          <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-[#e8edf4] bg-[#f7f9fc] p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-[18px] font-semibold text-[#0a0b0d]">Add a new cryptocurrency</h2>
+              <p className="mt-2 text-sm text-[#475569]">Expand your portfolio by integrating the latest digital assets. Select from our list of supported networks to get started.</p>
+            </div>
+            <span className="rounded-full border border-[#d1d9e0] bg-white px-4 py-2 text-sm text-[#334155]">See available cryptocurrencies you can trade</span>
+          </div>
+
+          <form onSubmit={handleAddCrypto} className="grid gap-4 md:grid-cols-5">
+            <input
+              value={newCryptoPayload.name}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, name: event.target.value }))}
+              placeholder="Name"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+            <input
+              value={newCryptoPayload.symbol}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, symbol: event.target.value }))}
+              placeholder="Symbol"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+            <input
+              value={newCryptoPayload.price}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, price: event.target.value }))}
+              placeholder="Price"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+              type="number"
+              step="0.01"
+            />
+            <input
+              value={newCryptoPayload.change24h}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, change24h: event.target.value }))}
+              placeholder="24h change"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+              type="number"
+              step="0.01"
+            />
+            <input
+              value={newCryptoPayload.image}
+              onChange={(event) => setNewCryptoPayload((prev) => ({ ...prev, image: event.target.value }))}
+              placeholder="Image URL"
+              className="rounded-2xl border border-[#d1d9e0] bg-white px-4 py-3 text-sm text-[#0a0b0d] outline-none"
+            />
+
+            <button
+              type="submit"
+              disabled={submitLoading}
+              className="md:col-span-5 rounded-full bg-[#273c75] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#1f2f5a] disabled:opacity-60"
+            >
+              {submitLoading ? "Saving crypto…" : "Add cryptocurrency"}
+            </button>
+          </form>
+
+          {(submitMessage || submitError) && (
+            <div className="mt-4 rounded-2xl border px-4 py-3 text-sm">
+              <p className={submitMessage ? "text-green-700" : "text-red-700"}>
+                {submitMessage || submitError}
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── Table Section ── */}
       <section className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-[1220px]">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
