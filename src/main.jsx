@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import "./index.css";
 import App from "./App.jsx";
+import { AuthProvider } from "./context/AuthContext";
 
 const rootElement = document.getElementById("root");
 
@@ -13,8 +14,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
       <App />
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 );

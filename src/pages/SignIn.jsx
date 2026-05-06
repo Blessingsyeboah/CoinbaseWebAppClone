@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authLogin } from "../api/api";
+import { useAuth } from "../context/AuthContext";
+
 
 function SignIn() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -15,8 +18,9 @@ function SignIn() {
     setLoading(true);
 
     try {
-      await authLogin({ email, password });
-      navigate("/");
+      const response = await authLogin( {email, password});
+      setUser(response.user);
+      navigate("/profile");
     } catch (error) {
       setMessage(error.message || "Unable to sign in.");
     } finally {

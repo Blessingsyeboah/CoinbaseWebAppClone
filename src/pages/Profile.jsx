@@ -1,36 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProfile } from "../api/api";
+import { useAuth } from "../context/AuthContext";
 
 function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { user, loading, error, checkAuth } = useAuth();
+  
 
   useEffect(() => {
-    let active = true;
-
-    const loadProfile = async () => {
+   const verify = async () => {
+    if (!user) {
       try {
-        const response = await fetchProfile();
-        if (!active) return;
-        setUser(response.user);
+        await checkAuth();
       } catch (err) {
-        if (!active) return;
-        setError(err.message || "Authentication required. Please sign in.");
         navigate("/signin", { replace: true });
-      } finally {
-        if (active) setLoading(false);
       }
-    };
-
-    loadProfile();
-
-    return () => {
-      active = false;
-    };
-  }, [navigate]);
+    }
+  };
+   verify();
+}, [navigate, checkAuth, user]);
 
   if (loading) {
     return (
