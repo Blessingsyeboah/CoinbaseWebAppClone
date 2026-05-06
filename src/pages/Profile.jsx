@@ -112,7 +112,6 @@ function Profile() {
       if (result?.success) {
         setSubmitMessage(result.message || "Cryptocurrency added successfully.");
         setNewCryptoPayload({ name: "", symbol: "", price: "", image: "", change24h: "" });
-        // Refresh the list
         await loadCryptos();
       }
     } catch (error) {
@@ -175,7 +174,7 @@ function Profile() {
           <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-[#e8edf4] bg-[#f7f9fc] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-[18px] font-semibold text-[#0a0b0d]">Add a new cryptocurrency</h2>
-              <p className="mt-2 text-sm text-[#475569]">Expand your portfolio by integrating the latest digital assets. Select from our list of supported networks to get started.</p>
+              <p className="mt-2 text-sm text-[#475569]">Expand your portfolio by integrating the latest digital assets.</p>
             </div>
             <span className="rounded-full border border-[#d1d9e0] bg-white px-4 py-2 text-sm text-[#334155]">See available cryptocurrencies you can trade</span>
           </div>
@@ -249,6 +248,7 @@ function Profile() {
                       <th className="px-4 py-4 text-right text-[11px] font-bold text-[#9fadc0] uppercase">Price</th>
                       <th className="px-4 py-4 text-center text-[11px] font-bold text-[#9fadc0] uppercase">Trend</th>
                       <th className="px-4 py-4 text-right text-[11px] font-bold text-[#9fadc0] uppercase">Change</th>
+                      <th className="px-4 py-4 text-right text-[11px] font-bold text-[#9fadc0] uppercase">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -267,6 +267,14 @@ function Profile() {
                         </td>
                         <td className={`px-4 py-4 text-right font-bold text-sm ${asset.positive ? "text-[#098551]" : "text-[#d93025]"}`}>
                           {asset.change}
+                        </td>
+                        <td className="px-4 py-4 text-right">
+                          <Link
+                            to={`/assets/${asset.symbol}`}
+                            className="inline-flex h-8 items-center justify-center rounded-full bg-blue-600 px-4 text-[13px] font-semibold text-white transition-colors hover:bg-blue-700"
+                          >
+                            Trade
+                          </Link>
                         </td>
                       </tr>
                     ))}
